@@ -476,10 +476,14 @@ export class SlackAPIClient {
 
   constructor(
     token: string | undefined = undefined,
-    options: SlackAPIClientOptions = { logLevel: "INFO" },
+    options: SlackAPIClientOptions = { logLevel: "INFO", apiUrl: "https://slack.com/api/" },
   ) {
     this.#token = token;
     this.#options = options;
+  }
+
+  getUrl(name: string): string {
+    return `${this.#options.apiUrl}${name}`;
   }
 
   async call(
@@ -487,7 +491,7 @@ export class SlackAPIClient {
     // deno-lint-ignore no-explicit-any
     params: Record<string, any>,
   ): Promise<SlackAPIResponse> {
-    const url = `https://slack.com/api/${name}`;
+    const url = this.getUrl(name);
     const token = params ? params.token ?? this.#token : this.#token;
     // deno-lint-ignore no-explicit-any
     const _params: any = {};
@@ -537,7 +541,7 @@ export class SlackAPIClient {
     // deno-lint-ignore no-explicit-any
     params: Record<string, any>,
   ): Promise<SlackAPIResponse> {
-    const url = `https://slack.com/api/${name}`;
+    const url = this.getUrl(name);
     const token = params ? params.token ?? this.#token : this.#token;
     const body = new FormData();
     for (const [key, value] of Object.entries(params)) {
