@@ -8,4 +8,5 @@ export interface SlackAPIClientOptions {
     | "info"
     | "warn"
     | "error";
+  apiUrl?: string;
 }
